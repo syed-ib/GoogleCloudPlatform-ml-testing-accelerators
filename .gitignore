@@ -1,2 +1,7 @@
 bazel-*
 **/__pycache__
+
+# Ignore generated yaml test files
+k8s/europe-west4/gen/*.yaml
+k8s/us-central1/gen/*.yaml
+k8s/us-central2/gen/*.yaml
