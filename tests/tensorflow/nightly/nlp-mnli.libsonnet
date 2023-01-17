@@ -57,12 +57,27 @@ local utils = import 'templates/utils.libsonnet';
   local v3_8 = {
     accelerator: tpus.v3_8,
   },
+  local v4_8 = {
+    accelerator: tpus.v4_8,
+  },
   local v2_32 = {
     accelerator: tpus.v2_32,
   },
   local v3_32 = {
     accelerator: tpus.v3_32,
   },
+
+  local tpuVm = experimental.TensorFlowTpuVmMixin {
+    command+: [
+      '--download',
+      '--tpu=$(KUBE_GOOGLE_CLOUD_TPU_ENDPOINTS)',
+    ],
+    flags+:: {
+      dataDir: '/tmp/nlp-mnli',
+      modelDir: '$(LOCAL_OUTPUT_DIR)',
+    },
+  },
+
   configs: [
     bert + accelerator + functional
     for accelerator in [v2_8, v3_8, v2_32, v3_32]
@@ -71,5 +86,6 @@ local utils = import 'templates/utils.libsonnet';
     bert + v3_8 + convergence + timeouts.Hours(3),
     bert + v2_32 + convergence,
     bert + v3_32 + convergence,
+    bert + v4_8 + functional + tpuVm,
   ],
 }

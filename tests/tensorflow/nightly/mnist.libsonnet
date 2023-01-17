@@ -79,6 +79,10 @@ local tpus = import 'templates/tpus.libsonnet';
   },
   local v4_8 = {
     accelerator: tpus.v4_8,
+    commmand+: [
+      '--distribution_strategy=tpu',
+      '--batch_size=4096',
+    ],
   },
   local v4_32 = {
     accelerator: tpus.v4_32,
@@ -103,6 +107,7 @@ local tpus = import 'templates/tpus.libsonnet';
     mnist + v2_8 + convergence + tpuVm,
     mnist + v3_8 + functional,
     mnist + v3_8 + convergence,
+    mnist + v4_8 + functional + tpuVm,
     mnist + v4_8 + convergence + tpuVm,
     mnist + v2_32 + convergence + tpuVm,
   ],
