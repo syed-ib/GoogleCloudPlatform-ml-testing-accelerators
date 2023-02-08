@@ -1,0 +1,193 @@
+"apiVersion": "batch/v1"
+"kind": "CronJob"
+"metadata":
+  "name": "cronjob-cleanup"
+"spec":
+  "jobTemplate":
+    "spec":
+      "backoffLimit": 0
+      "template":
+        "spec":
+          "containers":
+          - "args":
+            - |
+              cat > tests.txt <<EOF
+              cronjob.batch/flax-latest-hf-bart-func-v2-8-1vm
+              cronjob.batch/flax-latest-hf-bart-func-v3-8-1vm
+              cronjob.batch/flax-latest-hf-bert-mnli-func-v2-8-1vm
+              cronjob.batch/flax-latest-hf-bert-mnli-func-v3-8-1vm
+              cronjob.batch/flax-latest-hf-bert-mrpc-func-v2-8-1vm
+              cronjob.batch/flax-latest-hf-bert-mrpc-func-v3-8-1vm
+              cronjob.batch/flax-latest-hf-vit-func-v2-8-1vm
+              cronjob.batch/flax-latest-hf-vit-func-v3-8-1vm
+              cronjob.batch/flax-latest-imagenet-conv-v3-8-1vm
+              cronjob.batch/flax-latest-imagenet-func-v2-8-1vm
+              cronjob.batch/flax-latest-mnist-conv-v3-8-1vm
+              cronjob.batch/flax-latest-mnist-func-v2-8-1vm
+              cronjob.batch/flax-latest-wmt-conv-v3-8-1vm
+              cronjob.batch/flax-latest-wmt-func-v2-8-1vm
+              cronjob.batch/flax-latest-wmt-profile-v3-8-1vm
+              cronjob.batch/jax-compilation-cache-test-func-v2-8-1vm
+              cronjob.batch/pt-nightly-cpp-ops-func-v2-8-1vm
+              cronjob.batch/pt-nightly-dlrm-conv-v3-8-1vm
+              cronjob.batch/pt-nightly-fs-transformer-func-v3-8-1vm
+              cronjob.batch/pt-nightly-hf-glue-bert-b-c-conv-v2-8-1vm
+              cronjob.batch/pt-nightly-hf-glue-distilbert-b-uc-conv-v3-8-1vm
+              cronjob.batch/pt-nightly-hf-glue-roberta-l-conv-v3-8-1vm
+              cronjob.batch/pt-nightly-hf-glue-xlnet-l-c-conv-v3-8-1vm
+              cronjob.batch/pt-nightly-hf-mlm-bert-b-fine-conv-v3-8-1vm
+              cronjob.batch/pt-nightly-hf-mlm-bert-b-pre-conv-v3-8-1vm
+              cronjob.batch/pt-nightly-hf-mlm-roberta-b-fine-conv-v3-8-1vm
+              cronjob.batch/pt-nightly-hf-mlm-roberta-b-pre-conv-v2-8-1vm
+              cronjob.batch/pt-nightly-mnist-pjrt-conv-v2-8-1vm
+              cronjob.batch/pt-nightly-mnist-pjrt-ddp-conv-v2-8-1vm
+              cronjob.batch/pt-nightly-python-ops-func-v2-8-1vm
+              cronjob.batch/pt-nightly-python-ops-func-v3-8-1vm
+              cronjob.batch/pt-nightly-resnet50-mp-conv-v3-8-1vm
+              cronjob.batch/pt-nightly-resnet50-mp-fake-v3-8-1vm
+              cronjob.batch/pt-nightly-resnet50-mp-func-v100-x4
+              cronjob.batch/pt-nightly-resnet50-mp-torch-ddp-fake-v3-8-1vm
+              cronjob.batch/pt-nightly-resnet50-pjrt-conv-v3-8-1vm
+              cronjob.batch/pt-nightly-resnet50-pjrt-ddp-fake-v3-8-1vm
+              cronjob.batch/pt-nightly-resnet50-pjrt-fake-v3-8-1vm
+              cronjob.batch/pt-r1.13-dlrm-conv-v3-8
+              cronjob.batch/pt-r1.13-fs-transformer-conv-v3-8-1vm
+              cronjob.batch/pt-r1.13-hf-glue-bert-b-c-conv-v2-8
+              cronjob.batch/pt-r1.13-hf-glue-distilbert-b-uc-conv-v3-8
+              cronjob.batch/pt-r1.13-hf-glue-roberta-l-conv-v3-8
+              cronjob.batch/pt-r1.13-hf-glue-xlnet-l-c-conv-v3-8
+              cronjob.batch/pt-r1.13-hf-mlm-bert-b-fine-conv-v3-8
+              cronjob.batch/pt-r1.13-hf-mlm-bert-b-pre-conv-v3-8
+              cronjob.batch/pt-r1.13-hf-mlm-roberta-b-fine-conv-v3-8
+              cronjob.batch/pt-r1.13-hf-mlm-roberta-b-pre-conv-v2-8
+              cronjob.batch/pt-r1.13-mnist-conv-v100-x4
+              cronjob.batch/pt-r1.13-mnist-conv-v2-8
+              cronjob.batch/pt-r1.13-mnist-conv-v2-8-1vm
+              cronjob.batch/pt-r1.13-mnist-pjrt-conv-v2-8-1vm
+              cronjob.batch/pt-r1.13-resnet50-mp-conv-v3-8-1vm
+              cronjob.batch/pt-r1.13-resnet50-pjrt-conv-v3-8-1vm
+              cronjob.batch/pt-r1.13-roberta-pre-conv-v3-8-1vm
+              cronjob.batch/pt-r1.13-unet3d-conv-v3-8-1vm
+              cronjob.batch/pt-r1.13-w2v2-conv-v3-8
+              cronjob.batch/tf-nightly-keras-api-connection-v2-8
+              cronjob.batch/tf-nightly-keras-api-connection-v2-8-1vm
+              cronjob.batch/tf-nightly-keras-api-ctl-v2-8
+              cronjob.batch/tf-nightly-keras-api-ctl-v2-8-1vm
+              cronjob.batch/tf-nightly-keras-api-custom-layers-v2-8
+              cronjob.batch/tf-nightly-keras-api-custom-layers-v2-8-1vm
+              cronjob.batch/tf-nightly-keras-api-feature-column-v2-8
+              cronjob.batch/tf-nightly-keras-api-feature-column-v2-8-1vm
+              cronjob.batch/tf-nightly-keras-api-preprocess-layers-v2-8
+              cronjob.batch/tf-nightly-keras-api-rnn-v2-8
+              cronjob.batch/tf-nightly-keras-api-rnn-v2-8-1vm
+              cronjob.batch/tf-nightly-keras-api-save-and-load-v2-8
+              cronjob.batch/tf-nightly-keras-api-save-and-load-v2-8-1vm
+              cronjob.batch/tf-nightly-keras-api-save-load-localhost-v2-8
+              cronjob.batch/tf-nightly-keras-api-save-load-localhost-v2-8-1vm
+              cronjob.batch/tf-nightly-keras-api-train-and-evaluate-v2-8
+              cronjob.batch/tf-nightly-keras-api-train-and-evaluate-v2-8-1vm
+              cronjob.batch/tf-nightly-keras-api-train-eval-dataset-v2-8
+              cronjob.batch/tf-nightly-keras-api-transfer-learning-v2-8
+              cronjob.batch/tf-nightly-keras-api-transfer-learning-v2-8-1vm
+              cronjob.batch/tf-nightly-keras-api-upsample-v2-8
+              cronjob.batch/tf-nightly-keras-api-upsample-v2-8-1vm
+              cronjob.batch/tf-nightly-mnist-conv-v2-8
+              cronjob.batch/tf-nightly-mnist-conv-v2-8-1vm
+              cronjob.batch/tf-nightly-mnist-conv-v3-8
+              cronjob.batch/tf-nightly-mnist-func-v100-x1
+              cronjob.batch/tf-nightly-mnist-func-v3-8
+              cronjob.batch/tf-nightly-nlp-bert-mnli-conv-v2-8
+              cronjob.batch/tf-nightly-nlp-bert-mnli-conv-v3-8
+              cronjob.batch/tf-nightly-nlp-bert-mnli-func-v3-8
+              cronjob.batch/tf-nightly-nlp-wmt-transformer-conv-v2-8
+              cronjob.batch/tf-nightly-nlp-wmt-transformer-conv-v3-8
+              cronjob.batch/tf-nightly-nlp-wmt-transformer-func-v3-8
+              cronjob.batch/tf-nightly-ranking-dcn-conv-v100-x1
+              cronjob.batch/tf-nightly-ranking-dcn-conv-v3-8
+              cronjob.batch/tf-nightly-ranking-dlrm-conv-v100-x1
+              cronjob.batch/tf-nightly-ranking-dlrm-conv-v100-x4
+              cronjob.batch/tf-nightly-ranking-dlrm-conv-v3-8
+              cronjob.batch/tf-nightly-ranking-dlrm-conv-v3-8-1vm
+              cronjob.batch/tf-nightly-ranking-dlrm-func-v100-x1
+              cronjob.batch/tf-nightly-ranking-dlrm-func-v100-x4
+              cronjob.batch/tf-nightly-ranking-dlrm-func-v3-8
+              cronjob.batch/tf-nightly-vision-maskrcnn-conv-v2-8
+              cronjob.batch/tf-nightly-vision-maskrcnn-conv-v3-8
+              cronjob.batch/tf-nightly-vision-maskrcnn-func-v3-8
+              cronjob.batch/tf-nightly-vision-resnet-conv-v2-8-1vm
+              cronjob.batch/tf-nightly-vision-resnet-conv-v3-8-1vm
+              cronjob.batch/tf-nightly-vision-resnet-func-v3-8
+              cronjob.batch/tf-nightly-vision-resnetrs-conv-v2-8-1vm
+              cronjob.batch/tf-nightly-vision-resnetrs-conv-v3-8-1vm
+              cronjob.batch/tf-nightly-vision-resnetrs-func-v3-8
+              cronjob.batch/tf-nightly-vision-retinanet-conv-v2-8
+              cronjob.batch/tf-nightly-vision-retinanet-conv-v3-8
+              cronjob.batch/tf-nightly-vision-retinanet-func-v3-8
+              cronjob.batch/tf-r2.11.0-keras-api-connection-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-connection-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-keras-api-ctl-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-ctl-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-keras-api-custom-layers-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-custom-layers-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-keras-api-feature-column-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-feature-column-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-keras-api-preprocess-layers-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-rnn-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-rnn-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-keras-api-save-and-load-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-save-and-load-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-keras-api-save-load-localhost-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-save-load-localhost-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-keras-api-train-and-evaluate-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-train-and-evaluate-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-keras-api-train-eval-dataset-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-transfer-learning-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-transfer-learning-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-keras-api-upsample-v2-8
+              cronjob.batch/tf-r2.11.0-keras-api-upsample-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-mnist-func-v100-x1
+              cronjob.batch/tf-r2.11.0-mnist-func-v2-8
+              cronjob.batch/tf-r2.11.0-mnist-func-v3-8
+              cronjob.batch/tf-r2.11.0-nlp-bert-mnli-func-v2-8
+              cronjob.batch/tf-r2.11.0-nlp-bert-mnli-func-v3-8
+              cronjob.batch/tf-r2.11.0-nlp-wmt-transformer-func-v2-8
+              cronjob.batch/tf-r2.11.0-nlp-wmt-transformer-func-v3-8
+              cronjob.batch/tf-r2.11.0-ranking-dcn-func-v2-8
+              cronjob.batch/tf-r2.11.0-ranking-dcn-func-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-ranking-dlrm-func-v100-x1
+              cronjob.batch/tf-r2.11.0-ranking-dlrm-func-v100-x4
+              cronjob.batch/tf-r2.11.0-ranking-dlrm-func-v2-8-1vm
+              cronjob.batch/tf-r2.11.0-ranking-dlrm-func-v3-8
+              cronjob.batch/tf-r2.11.0-vision-maskrcnn-func-v2-8
+              cronjob.batch/tf-r2.11.0-vision-maskrcnn-func-v3-8
+              cronjob.batch/tf-r2.11.0-vision-resnet-func-v2-8
+              cronjob.batch/tf-r2.11.0-vision-resnet-func-v3-8
+              cronjob.batch/tf-r2.11.0-vision-resnetrs-func-v2-8
+              cronjob.batch/tf-r2.11.0-vision-resnetrs-func-v3-8
+              cronjob.batch/tf-r2.11.0-vision-retinanet-func-v2-8
+              cronjob.batch/tf-r2.11.0-vision-retinanet-func-v3-8
+              cronjob.batch/tf-r2.9.3-keras-api-connection-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-ctl-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-custom-layers-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-feature-column-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-preprocess-layers-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-rnn-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-save-and-load-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-save-load-localhost-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-train-and-evaluate-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-train-eval-dataset-v2-8
+              cronjob.batch/tf-r2.9.3-keras-api-transfer-learning-v2-8
+              EOF
+              
+              delete_list=$(kubectl get cronjob --namespace=automated -l benchmarkId -o name | grep -vx -f tests.txt)
+              if [[ "$delete_list" ]]; then
+                kubectl delete $delete_list;
+              fi
+            "command":
+            - "bash"
+            - "-cx"
+            "image": "google/cloud-sdk"
+            "name": "clean"
+          "restartPolicy": "Never"
+          "serviceAccount": "cronjob-cleaner"
+  "schedule": "0 */4 * * *"

@@ -1,0 +1,81 @@
+"apiVersion": "batch/v1"
+"kind": "CronJob"
+"metadata":
+  "name": "cronjob-cleanup"
+"spec":
+  "jobTemplate":
+    "spec":
+      "backoffLimit": 0
+      "template":
+        "spec":
+          "containers":
+          - "args":
+            - |
+              cat > tests.txt <<EOF
+              cronjob.batch/flax-latest-hf-bart-conv-v4-32-1vm
+              cronjob.batch/flax-latest-hf-bart-func-v4-32-1vm
+              cronjob.batch/flax-latest-hf-bart-func-v4-8-1vm
+              cronjob.batch/flax-latest-hf-bert-mnli-conv-v4-8-1vm
+              cronjob.batch/flax-latest-hf-bert-mnli-func-v4-8-1vm
+              cronjob.batch/flax-latest-hf-bert-mrpc-conv-v4-8-1vm
+              cronjob.batch/flax-latest-hf-bert-mrpc-func-v4-8-1vm
+              cronjob.batch/flax-latest-hf-vit-conv-v4-32-1vm
+              cronjob.batch/flax-latest-hf-vit-func-v4-32-1vm
+              cronjob.batch/flax-latest-hf-vit-func-v4-8-1vm
+              cronjob.batch/pax-lmspmd2b-func-v4-8-1vm
+              cronjob.batch/pax-lmtransformeradam-func-v4-8-1vm
+              cronjob.batch/pt-nightly-dlrm-pjrt-conv-v4-8-1vm
+              cronjob.batch/pt-nightly-fs-transformer-func-v4-8-1vm
+              cronjob.batch/pt-nightly-fs-transformer-pjrt-conv-v4-32-1vm
+              cronjob.batch/pt-nightly-fs-transformer-pjrt-func-v4-8-1vm
+              cronjob.batch/pt-nightly-hf-glue-pjrt-conv-v4-8-1vm
+              cronjob.batch/pt-nightly-hf-glue-roberta-l-conv-v4-8-1vm
+              cronjob.batch/pt-nightly-resnet50-mp-fake-v4-8-1vm
+              cronjob.batch/pt-nightly-resnet50-pjrt-conv-v4-32-1vm
+              cronjob.batch/pt-nightly-resnet50-pjrt-conv-v4-8-1vm
+              cronjob.batch/pt-nightly-resnet50-pjrt-ddp-conv-v4-8-1vm
+              cronjob.batch/pt-nightly-resnet50-pjrt-ddp-fake-v4-8-1vm
+              cronjob.batch/pt-nightly-resnet50-pjrt-fake-v4-32-1vm
+              cronjob.batch/pt-nightly-resnet50-pjrt-fake-v4-8-1vm
+              cronjob.batch/pt-r1.13-dlrm-conv-v4-8-1vm
+              cronjob.batch/pt-r1.13-dlrm-pjrt-conv-v4-8-1vm
+              cronjob.batch/pt-r1.13-fs-transformer-conv-v4-32-1vm
+              cronjob.batch/pt-r1.13-fs-transformer-conv-v4-8-1vm
+              cronjob.batch/pt-r1.13-fs-transformer-pjrt-conv-v4-32-1vm
+              cronjob.batch/pt-r1.13-fs-transformer-pjrt-conv-v4-8-1vm
+              cronjob.batch/pt-r1.13-mnist-pjrt-conv-v4-8-1vm
+              cronjob.batch/pt-r1.13-resnet50-mp-conv-v4-32-1vm
+              cronjob.batch/pt-r1.13-resnet50-mp-conv-v4-8-1vm
+              cronjob.batch/pt-r1.13-resnet50-pjrt-conv-v4-32-1vm
+              cronjob.batch/pt-r1.13-resnet50-pjrt-conv-v4-8-1vm
+              cronjob.batch/tf-nightly-mnist-conv-v4-8-1vm
+              cronjob.batch/tf-nightly-ranking-dlrm-func-v4-8-1vm
+              cronjob.batch/tf-nightly-vision-maskrcnn-func-v4-8-1vm
+              cronjob.batch/tf-nightly-vision-resnet-func-v4-8-1vm
+              cronjob.batch/tf-nightly-vision-retinanet-func-v4-8-1vm
+              cronjob.batch/tf-r2.11.0-nlp-bert-mnli-func-v4-32-1vm
+              cronjob.batch/tf-r2.11.0-nlp-bert-mnli-func-v4-8-1vm
+              cronjob.batch/tf-r2.11.0-nlp-wmt-transformer-func-v4-32-1vm
+              cronjob.batch/tf-r2.11.0-nlp-wmt-transformer-func-v4-8-1vm
+              cronjob.batch/tf-r2.11.0-ranking-dcn-func-v4-32-1vm
+              cronjob.batch/tf-r2.11.0-ranking-dlrm-func-v4-8-1vm
+              cronjob.batch/tf-r2.11.0-vision-maskrcnn-func-v4-32-1vm
+              cronjob.batch/tf-r2.11.0-vision-maskrcnn-func-v4-8-1vm
+              cronjob.batch/tf-r2.11.0-vision-resnet-func-v4-32-1vm
+              cronjob.batch/tf-r2.11.0-vision-resnet-func-v4-8-1vm
+              cronjob.batch/tf-r2.11.0-vision-retinanet-func-v4-32-1vm
+              cronjob.batch/tf-r2.11.0-vision-retinanet-func-v4-8-1vm
+              EOF
+              
+              delete_list=$(kubectl get cronjob --namespace=automated -l benchmarkId -o name | grep -vx -f tests.txt)
+              if [[ "$delete_list" ]]; then
+                kubectl delete $delete_list;
+              fi
+            "command":
+            - "bash"
+            - "-cx"
+            "image": "google/cloud-sdk"
+            "name": "clean"
+          "restartPolicy": "Never"
+          "serviceAccount": "cronjob-cleaner"
+  "schedule": "0 */4 * * *"
